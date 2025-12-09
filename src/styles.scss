@@ -1,2 +1,63 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+@theme {
+    --font-sans: "Poppins", ui-sans-serif, system-ui;
+    --color-text: theme(colors.gray.400);
+}
+
+
+@layer components {
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center
+           px-6 py-3 rounded-lg font-semibold
+           text-white bg-violet-600
+           hover:bg-violet-700
+           active:bg-violet-800
+           shadow-lg cursor-pointer
+           focus:outline-none focus:ring-4 focus:ring-violet-400
+           focus-visible:ring-2 focus-visible:ring-violet-500
+           transition-all duration-300 ease-in-out;
+  }
+
+  .btn-primary:disabled {
+    @apply bg-violet-300 text-gray-200 cursor-not-allowed shadow-none;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center
+           px-6 py-3 rounded-lg font-semibold
+           text-violet-600 border border-violet-600
+           bg-transparent
+           hover:bg-violet-50
+           active:bg-violet-100
+           cursor-pointer
+           focus:outline-none focus:ring-4 focus:ring-violet-300
+           focus-visible:ring-2 focus-visible:ring-violet-400
+           transition-all duration-300 ease-in-out;
+  }
+
+  .btn-outline:disabled {
+    @apply border-violet-200 text-violet-200 bg-transparent cursor-not-allowed;
+  }
+
+  .card {
+  @apply bg-white border border-gray-200 rounded-xl 
+         shadow-sm overflow-hidden 
+         transition-transform duration-300 ease-in-out 
+         hover:shadow-lg hover:scale-[1.02] cursor-pointer;
+}
+
+.card-header {
+  @apply p-4 border-b border-gray-100 font-semibold text-gray-800;
+}
+
+.card-body {
+  @apply p-4 text-gray-600 text-sm;
+}
+
+.card-footer {
+  @apply p-4 border-t border-gray-100 flex justify-end;
+}
+}

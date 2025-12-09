@@ -1,0 +1,32 @@
+<div class="fixed top-4 right-4 space-y-4 w-80">
+    @for (n of notifications(); track n.id) {
+    <div @slideInOut class="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden relative">
+
+        <button (click)="notificationService.removeById(n.id)"
+            class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition">
+            <i class="bi bi-x"></i>
+        </button>
+
+        <div class="pt-4 px-4 text-gray-800 font-semibold text-sm flex items-center uppercase">
+            <i class="bi text-lg mr-2" [ngClass]="{
+            'bi-check-lg text-emerald-500': n.type==='SUCCESS',
+              'bi-exclamation-circle text-red-500': n.type==='ERROR',
+              'bi-exclamation-triangle text-amber-500': n.type==='WARNING'
+        }"></i>
+            {{ n.title }}
+        </div>
+
+        <div class="mx-2 px-2 pt-2 pb-4 mb-2 text-gray-600 text-sm line-clamp-3 bg-gray-100/40 rounded">
+            {{ n.message }}
+        </div>
+
+        <div [ngClass]="{
+              'bg-emerald-500': n.type==='SUCCESS',
+              'bg-red-500': n.type==='ERROR',
+              'bg-amber-500': n.type==='WARNING'
+            }" class="h-1 transition-all ease-linear" [style.transition-duration.ms]="n.duration ?? 5000"
+            [style.width.%]="getProgress(n.id)">
+        </div>
+    </div>
+    }
+</div>
