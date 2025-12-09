@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '@environments/environment.development';
 
 @Component({
   selector: 'app-header',
