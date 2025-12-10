@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { User } from '../models/user';
-import { map, Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -20,8 +20,8 @@ export class AuthService {
     return this.http.post<User>(`${this.path}refresh`, { refresh_token });
   }
 
-  public register(formData: FormData): Observable<User> {
-    return this.http.post<User>(`${this.path}register`, formData);
+  public register(user: User): Observable<User> {
+    return this.http.post<User>(`${this.path}register`, user);
   }
 
   public changePasword(data: { password: string, confirm: string, token: string }) {
@@ -29,6 +29,11 @@ export class AuthService {
   }
 
   public getTokenChangePassword(email: string) {
-    return this.http.post(`${this.path}get-token-change-password/`, { email, callbackUrl: 'http://localhost:4200/auth/change-password' });
+    return this.http.post(`${this.path}get-token-change-password/`, { email, callbackUrl: `${environment.front_url}auth/reset` });
+  }
+
+  
+  public sendConfirmationToken(email: string) {
+    return this.http.get(`${this.path}send-confirmation-token/${email}`)
   }
 }

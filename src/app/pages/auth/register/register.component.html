@@ -1,7 +1,7 @@
 <div
     class="flex md:border border-gray-100 px-2 md:px-6 py-12 rounded-lg md:shadow max-w-lg mx-auto md:mt-20 flex-col gap-4 items-center">
     <h2 class="text-2xl font-semibold text-violet-500">Crear cuenta</h2>
-    <p class="text-gray-500 text-center">Regístrate para acceder a ofertas exclusivas</p>
+    <p class="text-gray-500 text-center">Regístrate para empezar a comprar</p>
 
     <form class="w-full px-4 flex flex-col gap-4 mt-4" [formGroup]="frm" (ngSubmit)="submit()">
         <div class="w-32 h-32 relative flex justify-center items-center mx-auto rounded-full border-violet-300 border overflow-hidden" (click)="avatar.click()">
@@ -44,7 +44,7 @@
                 class="absolute top-9 right-3 text-violet-500 cursor-pointer hover:bg-violet-500/10 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-300">
                 <i [ngClass]="{'bi-eye':!showConfirm,'bi-eye-slash':showConfirm}" class="bi bi-eye"></i></button>
         </div>
-        <button type="submit" class="btn-primary w-full">Crear cuenta</button>
+        <button type="submit" class="btn-primary w-full">{{loading?'Creando cuenta...':'Crear cuenta'}}</button>
     </form>
 
     <div class="flex items-center w-full gap-8">

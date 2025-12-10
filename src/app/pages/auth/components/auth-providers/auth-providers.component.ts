@@ -12,18 +12,19 @@ import { environment } from '@environments/environment.development';
 export class AuthProvidersComponent {
 
   private readonly router = inject(Router);
-
+  protected providerSelected: string = '';
 
   protected handleAuth(provider: string) {
-
+    this.providerSelected = provider;
     const width = 600;
     const height = 600;
     const pageToken = environment.apikey;
+    const authBack = environment.auth_back_url;
 
     const left = window.screen.width / 2 - width / 2;
     const top = window.screen.height / 2 - height / 2;
 
-    const authUrl = `https://ms.dveloxsoft.com/auth/${provider}?state=${pageToken}`;
+    const authUrl = `${authBack}auth/${provider}?state=${pageToken}`;
 
     const popup = window.open(
       authUrl,
@@ -31,10 +32,11 @@ export class AuthProvidersComponent {
       `width=${width},height=${height},left=${left},top=${top}`
     );
 
-    const backendOrigin = 'https://ms.dveloxsoft.com';
+    const backendOrigin = authBack;
 
     const popupChecker = setInterval(() => {
       if (!popup || popup.closed) {
+        this.providerSelected = ''
         clearInterval(popupChecker);
       }
     }, 500);

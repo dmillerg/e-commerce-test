@@ -8,6 +8,6 @@ export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'confirm', component: ConfirmComponent },
-    { path: 'reset', component: ResetPasswordComponent },
+    { path: 'confirm/:email', component: ConfirmComponent },
+    { path: 'reset/:token', component: ResetPasswordComponent },
 ];

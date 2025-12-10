@@ -8,6 +8,7 @@ import { ErrorHighlightDirective } from '@app/core/directives/error-hightlight.d
 import { AuthService } from '@app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
+import { NotificationService } from '@app/core/services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -26,14 +27,18 @@ export class RegisterComponent {
   protected showPassword = false;
   protected showConfirm = false;
 
+  private readonly notificationService = inject(NotificationService);
+
+  protected loading: boolean = false;
+
   private fb = inject(FormBuilder);
   protected frm = this.fb.group({
-  email: [null, [Validators.required, Validators.pattern(ExpressionValidate.email)]],
-  name: [null, [Validators.required]],
-  avatar: this.fb.control<File | null>(null), // 👈 acepta File o null
-  password: [null, [Validators.required, Validators.minLength(8)]],
-  confirm: [null, [Validators.required, matchPasswordValidator]],
-});
+    email: [null, [Validators.required, Validators.pattern(ExpressionValidate.email)]],
+    name: [null, [Validators.required]],
+    avatar: this.fb.control<string | null>(null),
+    password: [null, [Validators.required, Validators.minLength(8)]],
+    confirm: [null, [Validators.required, matchPasswordValidator]],
+  });
 
 
   private readonly authService = inject(AuthService);
@@ -46,24 +51,15 @@ export class RegisterComponent {
       this.frm.markAllAsTouched();
       return;
     }
-
-    const formData = new FormData();
-
-    formData.append('email', this.frm.get('email')?.value ?? '');
-    formData.append('name', this.frm.get('name')?.value ?? '');
-    formData.append('password', this.frm.get('password')?.value ?? '');
-    formData.append('confirm', this.frm.get('confirm')?.value ?? '');
-
-    const avatarControl = this.frm.get('avatar');
-    const file: File | null = avatarControl!.value;
-    if (file instanceof File) {
-      formData.append('avatar', file);
-    }
-
-    this.authService.register(formData).pipe(take(1)).subscribe({
+    this.loading = true;
+    this.authService.register(this.frm.value as any).pipe(take(1)).subscribe({
       next: () => {
-        this.router.navigate(['products/catalog']);
-      }
+        this.loading = false;
+        this.notificationService.push('Cuenta activa', 'Se ha confirmado su correo satisfactoriamente ahora solo debe iniciar sesión', 5000, 'SUCCESS');
+        setTimeout(() => {
+          this.router.navigate([`auth/confirm/${this.frm.value.email}`]);
+        }, 2000);
+      }, complete: () => this.loading = false
     });
   }
 
@@ -78,12 +74,14 @@ export class RegisterComponent {
       return;
     }
 
-    this.frm.get('avatar')?.setValue(file);
-
     const reader = new FileReader();
     reader.onload = () => {
-      this.avatarSrc = reader.result as string;
+      const base64 = reader.result as string;
+      this.avatarSrc = base64;
+
+      this.frm.get('avatar')?.setValue(base64);
     };
     reader.readAsDataURL(file);
   }
+
 }
