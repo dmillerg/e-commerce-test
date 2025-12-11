@@ -3,11 +3,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '@app/core/services/products.service';
 import { take } from 'rxjs';
+import { RatingsComponent } from '../components/ratings/ratings.component';
 
 @Component({
   selector: 'app-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RatingsComponent],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
   providers: [ProductsService]

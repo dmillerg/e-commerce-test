@@ -15,8 +15,10 @@
                 <div>
                     <span class="text-sm text-muted-foreground">{{product.category}}</span>
                     <h1 class="text-3xl font-bold">{{ product.title }}</h1>
-                    <div class="flex items-center gap-2 mt-2">
-                        <div class="flex items-center text-amber-500">
+                    <div class="flex items-center gap-4 mt-2">
+                        <div class="flex items-center text-violet-500">
+                            <app-ratings [currentRating]="product.rating.rate" />
+                            <div class="text-sm text-muted-foreground flex gap-1 ml-2"> <span>{{product.rating.rate}}</span> <span>({{product.rating.count}} reseñas)</span></div>
                         </div>
                     </div>
                 </div>

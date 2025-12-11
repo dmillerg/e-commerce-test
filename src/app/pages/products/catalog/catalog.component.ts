@@ -7,7 +7,7 @@ import { SearchPipe } from '@app/core/pipes/search.pipe';
 import { SortPipe } from '@app/core/pipes/sort-by-name-or-price.pipe';
 import { ProductsService } from '@app/core/services/products.service';
 import { DropdownComponent } from '@app/shared/components/dropdown/dropdown.component';
-import { take } from 'rxjs';
+import { forkJoin, mergeMap, take } from 'rxjs';
 import { ProductCardComponent } from '../components/product-card/product-card.component';
 import { PaginatorComponent } from '@app/shared/components/paginator/paginator.component';
 import { AccordionComponent } from '@app/shared/components/accordion/accordion.component';
@@ -54,29 +54,43 @@ export class CatalogComponent implements OnInit {
   }
 
   private getProducts() {
-    this.productService.getProducts().pipe(take(1)).subscribe({
-      next: (response) => {
-        this.catalog = response;
-        this.catalogAll = response;
-        this.setPage(1);
-        const counts = response.reduce((acc: Record<string, number>, product: any) => {
-          acc[product.category] = (acc[product.category] || 0) + 1;
-          return acc;
-        }, {});
+  this.productService.getProducts().pipe(
+    take(1),
+    mergeMap((response) => {
+      this.catalogAll = response;
+      this.setPage(1);
 
-        this.categories = Object.keys(counts).map(cat => ({
-          name: cat,
-          value: cat,
-          checked: false,
-          cant: counts[cat]
-        }));
-        const prices = response.map((p: any) => p.price);
+      const counts = response.reduce((acc: Record<string, number>, product: any) => {
+        acc[product.category] = (acc[product.category] || 0) + 1;
+        return acc;
+      }, {});
+      this.categories = Object.keys(counts).map(cat => ({
+        name: cat,
+        value: cat,
+        checked: false,
+        cant: counts[cat]
+      }));
 
-        this.maxPrice = Math.max(...prices);
-        this.minPrice = Math.min(...prices);
-      }
+      const prices = response.map((p: any) => p.price);
+      this.maxPrice = Math.max(...prices);
+      this.minPrice = Math.min(...prices);
+
+      const detailRequests = response.map(p =>
+        this.productService.getSingleProduct(p.id).pipe(take(1))
+      );
+
+      return forkJoin(detailRequests);
     })
-  }
+  ).subscribe({
+    next: (fullProducts: Product[]) => {
+      this.catalog = fullProducts;
+      this.catalogAll = fullProducts;
+      this.setPage(1)
+      console.log('Productos detallados:', this.catalog);
+    }
+  });
+}
+
 
   setPage(page: number) {
     if (page < 1 || page > this.catalog.length) return;
