@@ -1,1 +1,61 @@
-<p>register works!</p>
+<div
+    class="flex md:border border-gray-100 px-2 md:px-6 py-12 rounded-lg md:shadow max-w-lg mx-auto md:mt-20 flex-col gap-4 items-center">
+    <h2 class="text-2xl font-semibold text-violet-500">Crear cuenta</h2>
+    <p class="text-gray-500 text-center">Regístrate para empezar a comprar</p>
+
+    <form class="w-full px-4 flex flex-col gap-4 mt-4" [formGroup]="frm" (ngSubmit)="submit()">
+        <div class="w-32 h-32 relative flex justify-center items-center mx-auto rounded-full border-violet-300 border overflow-hidden" (click)="avatar.click()">
+            @if(!avatarSrc||frm.get('avatar')?.invalid){
+            <i class="bi bi-person absolute text-8xl text-violet-500">
+            </i>
+            } @else {
+            <img [src]="avatarSrc ? avatarSrc : ''" alt="user avatar"
+                class="w-full h-full object-contain">
+            }
+
+            <input #avatar type="file" accept="image/*" class="hidden"
+                (change)="onFileSelected($event)">
+        </div>
+
+        <div class="w-full">
+            <label for="email" class="text-sm text-gray-500 mb-2">Correo</label>
+            <input appErrorHighlight id="email" formControlName="email" type="text" class="form-control"
+                placeholder="Ingrese su correo electrónico">
+        </div>
+        <div class="w-full">
+            <label for="name" class="text-sm text-gray-500 mb-2">Nombre completo</label>
+            <input appErrorHighlight id="name" type="text" formControlName="name" class="form-control"
+                placeholder="Ingrese su nombre y apellidos">
+        </div>
+        <div class="w-full relative">
+            <label for="password" class="text-sm text-gray-500 w-full flex justify-between mb-2">Contraseña </label>
+            <input appErrorHighlight id="password" formControlName="password" [type]="!showPassword?'password':'text'"
+                type="text" class="form-control" placeholder="*********">
+            <button (click)="showPassword=!showPassword" type="button"
+                class="absolute top-9 right-3 text-violet-500 cursor-pointer hover:bg-violet-500/10 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-300">
+                <i [ngClass]="{'bi-eye':!showPassword,'bi-eye-slash':showPassword}" class="bi bi-eye"></i></button>
+        </div>
+        <div class="w-full relative">
+            <label for="confirm" class="text-sm text-gray-500 w-full flex justify-between mb-2">Confirmar
+                contraseña</label>
+            <input appErrorHighlight id="confirm" formControlName="confirm" [type]="!showConfirm?'password':'text'"
+                type="text" class="form-control" placeholder="*********">
+            <button (click)="showConfirm=!showConfirm" type="button"
+                class="absolute top-9 right-3 text-violet-500 cursor-pointer hover:bg-violet-500/10 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-300">
+                <i [ngClass]="{'bi-eye':!showConfirm,'bi-eye-slash':showConfirm}" class="bi bi-eye"></i></button>
+        </div>
+        <button type="submit" class="btn-primary w-full">{{loading?'Creando cuenta...':'Crear cuenta'}}</button>
+    </form>
+
+    <div class="flex items-center w-full gap-8">
+        <div class="flex-1 border-t border-gray-300"></div>
+        <span class="text-gray-500 text-sm uppercase">O regístrate con</span>
+        <div class="flex-1 border-t border-gray-300"></div>
+    </div>
+
+    <app-auth-providers class="w-full"></app-auth-providers>
+
+    <div class="mx-auto text-sm text-gray-400">¿Ya tienes una cuenta? <a href="auth/login"
+            class="text-violet-400 hover:underline">Iniciar sesión</a></div>
+
+</div>
