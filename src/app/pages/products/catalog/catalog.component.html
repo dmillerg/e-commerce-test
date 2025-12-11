@@ -29,14 +29,22 @@
                     <button (click)="openSidebar=true" class="btn-outline"><i class="bi bi-filter"></i> Filtros</button>
                 </div>
                 <div class="flex justify-between items-center w-full px-1 mb-3">
+                    @if(!loading){
                     <span class="text-gray-500 text-sm">Mostrando {{products.length}} de
                         {{catalog.length}}
                         productos</span>
-
+                    }
                     <app-dropdown [options]="sortBy" (select)="sortValue=$event"
                         placeholder="Selecciona una opción"></app-dropdown>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    @if(loading){
+                    <app-product-skeleton></app-product-skeleton>
+                    <app-product-skeleton></app-product-skeleton>
+                    <app-product-skeleton></app-product-skeleton>
+                    <app-product-skeleton></app-product-skeleton>
+                    <app-product-skeleton></app-product-skeleton>
+                    }@else{
                     @for (product of (products | sortNamePrice:sortValue | search: frmSearch.get('search')!.value!);
                     track $index)
                     {
@@ -46,11 +54,14 @@
                         <span class="text-gray-500">No hay productos para mostrar</span>
                     </div>
                     }
+                    }
                 </div>
                 @if(products.length>0){
                 <div class="flex w-full">
+                    @if(!loading){
                     <app-paginator class="mx-auto" [totalItems]="catalog.length" [currentPage]="currentPage"
                         [itemsPerPage]="10" (pageChange)="setPage($event)"></app-paginator>
+                    }
                 </div>
                 }
             </div>
