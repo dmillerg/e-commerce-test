@@ -1,0 +1,6 @@
+<div class="checkbox-container">
+    <input type="checkbox" [id]="id()" class="custom-checkbox" [(ngModel)]="item()!.checked"/>
+    <label [for]="id()" class="custom-label text-gray-800 ">
+      {{item()!.name}} <span class="text-muted-foreground">({{item()!.cant??0}})</span>
+    </label>
+  </div>

@@ -1,0 +1,42 @@
+<div class="flex items-center justify-between px-4">
+    <h2 class="text-lg font-medium ">Filtros</h2>
+    <button class="h-8 text-sm text-muted-foreground" (click)="resetFilter()">Limpiar</button>
+</div>
+<div class="w-full mx-auto gap-2">
+    <div class="accordion-item  rounded-lg relative">
+        <input type="checkbox" checked [id]="'accordion-1'+id()" class="peer hidden" />
+        <label #label1 [for]="'accordion-1'+id()"
+            class="flex justify-between items-center px-4 py-3 font-medium text-gray-700 cursor-pointer hover:text-underline border-b  border-gray-300">
+            <span>Categorías</span>
+
+        </label>
+        <div class="flex flex-col items-start h-26 py-2 justify-center gap-2 px-2 my-4">
+            @for (item of categorys(); track $index) {
+            <app-checkbox [item]="item" [id]="item.value+id" />
+            }
+        </div>
+    </div>
+
+    <div class="accordion-item  rounded-lg relative">
+        <input type="checkbox" checked [id]="'accordion-2'+id()" class="peer hidden" />
+        <label #label2 [for]="'accordion-2'+id()"
+            class="flex justify-between items-center px-4 py-3 font-medium text-gray-700 cursor-pointer hover:text-underline border-b  border-gray-300">
+            <span>Precios</span>
+        </label>
+
+        <div class="flex flex-col items-start h-26 py-2 justify-center gap-2 px-2">
+            <span class="text-sm text-gray-600 mt-3">Productos con precios por debajo de
+                {{currentPrice|currency}}</span>
+            <input step="0.01" type="range" [min]="minPrice()" [max]="maxPrice()" [(ngModel)]="currentPrice"
+                class="w-full accent-violet-500 appearance-none h-2 rounded-full bg-gray-200" />
+
+            <div class="flex justify-between w-full text-gray-600 font-thin">
+                <span class="text-xs">{{minPrice()|currency}}</span>
+                <span class="text-xs">{{maxPrice()|currency}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button (click)="applyFilter()" class="w-full mt-3 btn-primary">Aplicar
+    filtros</button>

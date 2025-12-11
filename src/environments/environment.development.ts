@@ -1,3 +1,4 @@
 export const environment = {
-    platformName: "TechNova"
+    platformName: "TechNova",
+    products_url:"https://fakestoreapi.com/products/"
 };
