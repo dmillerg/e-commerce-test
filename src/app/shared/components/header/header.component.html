@@ -19,9 +19,12 @@
                 <li><a href="products" class="hover:text-violet-600">
                         Productos</a></li>
                 <li><a href="contact" class="hover:text-violet-600">Contacto</a></li>
-                <li><a href="#" class="hover:text-violet-600"><i class="bi bi-search"></i></a></li>
-                <li><a href="profile" class="hover:text-violet-600"><i class="bi bi-person-circle"></i></a></li>
-                <li><a href="cart" class="hover:text-violet-600"><i class="bi bi-cart3"></i></a></li>
+                <li [appTooltip]="'Mi perfil'"><a href="profile" class="hover:text-violet-600"><i
+                            class="bi bi-person-circle"></i></a></li>
+                <li [appTooltip]="'Ir a mi carrito'" class="relative"> @if(total()>0){<div
+                        class="w-5 h-5 -top-3 -right-3 bg-violet-500 text-white text-xs absolute rounded-full flex justify-center items-center text-center">
+                        {{total()}}</div>}<a href="profile/cart" class="hover:text-violet-600"><i
+                            class="bi bi-cart3"></i></a></li>
             </ul>
         </nav>
     </div>

@@ -52,51 +52,46 @@ export class CatalogComponent implements OnInit {
   protected loading: boolean = false;
 
   ngOnInit(): void {
-
     this.getProducts()
-
-
   }
 
   private getProducts() {
     this.loading = true;
-    setTimeout(() => {
-      this.productService.getProducts().pipe(
-        take(1),
-        mergeMap((response) => {
-          this.catalogAll = response;
-          this.setPage(1);
+    this.productService.getProducts().pipe(
+      take(1),
+      mergeMap((response) => {
+        this.catalogAll = response;
+        this.setPage(1);
 
-          const counts = response.reduce((acc: Record<string, number>, product: any) => {
-            acc[product.category] = (acc[product.category] || 0) + 1;
-            return acc;
-          }, {});
-          this.categories = Object.keys(counts).map(cat => ({
-            name: cat,
-            value: cat,
-            checked: false,
-            cant: counts[cat]
-          }));
+        const counts = response.reduce((acc: Record<string, number>, product: Product) => {
+          acc[product.category] = (acc[product.category] || 0) + 1;
+          return acc;
+        }, {});
+        this.categories = Object.keys(counts).map(cat => ({
+          name: cat,
+          value: cat,
+          checked: false,
+          cant: counts[cat]
+        }));
 
-          const prices = response.map((p: any) => p.price);
-          this.maxPrice = Math.max(...prices);
-          this.minPrice = Math.min(...prices);
+        const prices = response.map((p: Product) => p.price);
+        this.maxPrice = Math.max(...prices);
+        this.minPrice = Math.min(...prices);
 
-          const detailRequests = response.map(p =>
-            this.productService.getSingleProduct(p.id).pipe(take(1))
-          );
+        const detailRequests = response.map(p =>
+          this.productService.getSingleProduct(p.id).pipe(take(1))
+        );
 
-          return forkJoin(detailRequests);
-        })
-      ).subscribe({
-        next: (fullProducts: Product[]) => {
-          this.loading = false;
-          this.catalog = fullProducts;
-          this.catalogAll = fullProducts;
-          this.setPage(1)
-        }
-      });
-    }, 5000);
+        return forkJoin(detailRequests);
+      })
+    ).subscribe({
+      next: (fullProducts: Product[]) => {
+        this.loading = false;
+        this.catalog = fullProducts;
+        this.catalogAll = fullProducts;
+        this.setPage(1)
+      }
+    });
   }
 
 

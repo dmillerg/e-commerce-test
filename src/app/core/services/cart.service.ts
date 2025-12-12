@@ -10,8 +10,12 @@ export class CartService {
   private readonly http = inject(HttpClient);
   private readonly path: string = environment.fake_url + 'carts/'
 
-  public getCart(id: number): Observable<Cart>{
+  public getCart(id: number): Observable<Cart> {
     return this.http.get<Cart>(`${this.path}${id}`)
+  }
+
+  public createCart(cart: Cart) {
+    return this.http.post(`${this.path}`, cart)
   }
 
 }
