@@ -5,9 +5,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ExpressionValidate } from '@app/core/consts/expresion-validate';
 import { ErrorHighlightDirective } from '@app/core/directives/error-hightlight.directive';
 import { AuthService } from '@app/core/services/auth.service';
-import { take } from 'rxjs';
+import { switchMap, take } from 'rxjs';
 import { Router } from '@angular/router';
 import { NotificationService } from '@app/core/services/notification.service';
+import { UserService } from '@app/core/services/user.service';
+import { UserStore } from '@app/core/stores/user.store';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,7 @@ import { NotificationService } from '@app/core/services/notification.service';
   imports: [CommonModule, AuthProvidersComponent, ReactiveFormsModule, ErrorHighlightDirective],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  providers: [AuthService]
+  providers: [AuthService, UserService]
 })
 export class LoginComponent {
 
@@ -25,6 +27,8 @@ export class LoginComponent {
   protected showPassword: boolean = false;
   private fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly userService = inject(UserService);
+  private readonly userStore = inject(UserStore);
   private readonly router = inject(Router);
   protected frm = this.fb.group({
     email: [null, [Validators.required, Validators.pattern(ExpressionValidate.email)]],
@@ -32,16 +36,28 @@ export class LoginComponent {
   });
   private readonly notificationService = inject(NotificationService);
 
+
   protected submit() {
     if (this.frm.invalid) return this.frm.markAllAsTouched();
     this.loadingLogin = true;
-    this.authService.login(this.frm.value as any).pipe(take(1)).subscribe({
-      next: () => {
+
+    this.authService.login(this.frm.value as any).pipe(
+      take(1),
+      switchMap((response) => {
+        sessionStorage.setItem('auth', JSON.stringify(response));
+        return this.userService.getUserData();
+      })
+    ).subscribe({
+      next: (user) => {
         this.loadingLogin = false;
-        this.router.navigate(['products/catalog'])
+        this.userStore.setUser(user);
+        this.router.navigate(['products/catalog']);
+      },
+      error: (err) => {
+        this.loadingLogin = false;
       },
       complete: () => this.loadingLogin = false
-    })
+    });
   }
 
   protected forgetPassword() {
