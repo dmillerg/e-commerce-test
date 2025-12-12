@@ -27,4 +27,8 @@ export class UserService {
     const refresh_token = JSON.parse(storage)?.refresh_token
     return this.http.post<User>(`${this.path}refresh`, { refresh_token });
   }
+
+    public update(user: User): Observable<User> {
+    return this.http.put<User>(`${this.path}update/${user.id}`, user);
+  }
 }

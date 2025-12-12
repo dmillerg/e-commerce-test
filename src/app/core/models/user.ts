@@ -9,7 +9,9 @@ export interface User {
   updatedAt: string;
   lastLogin: string;
   active: number;
+  address: string;
   providers: Provider[];
+  password?:string;
 }
 
 export interface Provider {
