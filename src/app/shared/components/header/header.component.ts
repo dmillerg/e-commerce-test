@@ -3,6 +3,7 @@ import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angul
 import { TooltipDirective } from '@app/core/directives/tootltip.directive';
 import { Cart } from '@app/core/models/cart';
 import { CartStore } from '@app/core/stores/cart.store';
+import { UserStore } from '@app/core/stores/user.store';
 import { environment } from '@environments/environment.development';
 
 @Component({
@@ -15,6 +16,7 @@ import { environment } from '@environments/environment.development';
 export class HeaderComponent implements OnInit {
   protected platformName = environment.platformName;
   private readonly cartStore = inject(CartStore);
+  protected userStore = inject(UserStore);
   private readonly platformId = inject(PLATFORM_ID);
 
   menuOpen = signal(false);
