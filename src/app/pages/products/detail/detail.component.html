@@ -6,7 +6,7 @@
             <div class="space-y-4">
                 <div
                     class="relative aspect-square overflow-hidden rounded-lg border border-gray-300 flex justify-center items-center">
-                    <img (error)="handleImageError($event)" [src]="product.image || '/placeholder.svg'"
+                    <img [src]="product.image || '/placeholder.svg'"
                         [alt]="product.title" class="object-cover" />
                 </div>
             </div>
@@ -25,9 +25,6 @@
 
                 <div class="flex items-baseline gap-2">
                     <span class="text-3xl font-bold text-violet-500">{{ product.price|currency }}</span>
-                    @if(product.discountPercent){
-                    <span class="line-through text-gray-400">{{product.price | currency}}</span>
-                    }
                 </div>
 
                 <hr />
@@ -48,7 +45,7 @@
                             </button>
                             <span class="w-12 text-center">{{ quantity }}</span>
                             <button class="h-9 w-9 rounded-none cursor-pointer" (click)="handleIncreaseQuantity()"
-                                [disabled]="quantity >= product.availability">
+                               >
                                 +
                             </button>
                         </div>
@@ -72,7 +69,7 @@
                         </div>
                     </div>
 
-                    <button class=" w-full btn-primary">
+                    <button [disabled]="!isLog" class=" w-full btn-primary" (click)="addCart()">
                         Añadir al carrito
                     </button>
 
@@ -101,9 +98,7 @@
                 <div class="h-12 w-full bg-gray-300/40 rounded-lg mt-4"></div>
 
             </div>
-
         </div>
         }
-
     </div>
 </main>
