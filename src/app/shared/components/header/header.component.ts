@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { UserStore } from '@app/core/stores/user.store';
 import { environment } from '@environments/environment.development';
 
 @Component({
@@ -10,6 +11,8 @@ import { environment } from '@environments/environment.development';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+
+  protected userStore = inject(UserStore);
   protected platformName= environment.platformName;
   menuOpen = signal(false);
 

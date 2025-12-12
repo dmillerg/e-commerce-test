@@ -1,17 +1,23 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '@app/core/services/user.service';
+import { UserStore } from '@app/core/stores/user.store';
 import { environment } from '@environments/environment.development';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-auth-providers',
   standalone: true,
   imports: [],
   templateUrl: './auth-providers.component.html',
-  styleUrl: './auth-providers.component.scss'
+  styleUrl: './auth-providers.component.scss',
+  providers: [UserService]
 })
 export class AuthProvidersComponent {
 
   private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
+  private readonly userStore = inject(UserStore);
   protected providerSelected: string = '';
 
   protected handleAuth(provider: string) {
@@ -42,12 +48,19 @@ export class AuthProvidersComponent {
     }, 500);
 
     window.addEventListener('message', (event) => {
-      if (event.origin !== backendOrigin) return;
+      if (event.origin + '/' !== backendOrigin) return;
 
       try {
         const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        sessionStorage.setItem('user', JSON.stringify(data));
-        this.router.navigate(['products/catalog'])
+        const mapedData = {
+          provider: data.provider,
+          access_token: data.accessToken,
+          refresh_token: data.refreshToken
+        }
+        sessionStorage.setItem('auth', JSON.stringify(mapedData));
+        setTimeout(() => {
+          this.getUserData();
+        }, 1000);
       } catch (err) {
         console.error('Error parsing auth response:', err);
       }
@@ -55,6 +68,14 @@ export class AuthProvidersComponent {
       clearInterval(popupChecker);
       popup?.close();
     });
+  }
 
+  private getUserData() {
+    this.userService.getUserData().pipe(take(1)).subscribe({
+      next: (response) => {
+        this.userStore.setUser(response);
+        this.router.navigate(['products/catalog'])
+      }
+    })
   }
 }

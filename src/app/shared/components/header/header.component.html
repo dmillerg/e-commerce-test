@@ -2,10 +2,14 @@
     <div class="flex justify-between items-center max-w-6xl mx-auto py-4 px-6">
         <h1 class="text-xl font-bold">{{platformName}}</h1>
 
-        <div class="flex items-center gap-6">
-            <button (click)="toggleMenu()" class="md:hidden flex flex-col gap-1" aria-label="Abrir menú">
-                <i class="bi bi-person"></i>
-            </button>
+        <div class="flex md:hidden items-center gap-6">
+            <a href="profile" class="hover:text-violet-600">
+                @if(userStore.getUser()){
+                <img [src]="userStore.getUser()?.avatar" alt="" class="w-6 h-6">
+                }@else {
+                <i class="bi bi-person-circle"></i>
+                }
+            </a>
             <button (click)="toggleMenu()" class="md:hidden flex flex-col gap-1" aria-label="Abrir menú">
                 <i class="bi bi-cart3"></i>
             </button>
@@ -20,7 +24,15 @@
                         Productos</a></li>
                 <li><a href="contact" class="hover:text-violet-600">Contacto</a></li>
                 <li><a href="#" class="hover:text-violet-600"><i class="bi bi-search"></i></a></li>
-                <li><a href="profile" class="hover:text-violet-600"><i class="bi bi-person-circle"></i></a></li>
+                <li>
+                    <a href="profile" class="hover:text-violet-600">
+                        @if(userStore.getUser()){
+                        <img [src]="userStore.getUser()?.avatar" alt="" class="w-6 h-6">
+                        }@else {
+                        <i class="bi bi-person-circle"></i>
+                        }
+                    </a>
+                </li>
                 <li><a href="cart" class="hover:text-violet-600"><i class="bi bi-cart3"></i></a></li>
             </ul>
         </nav>
