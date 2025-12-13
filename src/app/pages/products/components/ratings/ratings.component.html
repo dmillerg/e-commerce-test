@@ -1,0 +1,15 @@
+<div class="flex gap-1">
+    @for (star of stars; track $index) {
+    @if($index<currentRating&& hasDecimal(currentRating)&& isHalf($index)){ <i (click)="rate($index+1)"
+        class="bi bi-star-half" [ngClass]="{'cursor-pointer': editing}"></i>
+        }
+        @else if($index<currentRating) { <i (click)="rate($index+1)" [ngClass]="{'cursor-pointer': editing}" class="bi bi-star-fill cursor-pointer"></i>
+            }@else{
+            <i (click)="rate($index+1)" [ngClass]="{'cursor-pointer': editing}" class="bi bi-star"></i>
+            }
+            }
+            @if(editing && currentRating>0){
+            <i (click)="currentRating=0" class="bi bi-trash text-gray-600 cursor-pointer mx-2"></i>
+            }
+
+</div>

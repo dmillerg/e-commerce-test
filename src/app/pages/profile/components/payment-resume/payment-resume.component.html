@@ -1,0 +1,56 @@
+<div class="card">
+    <div class="card-header">
+        Información de pago
+    </div>
+    <div class="card-body flex flex-col gap-4">
+
+        <form [formGroup]="frm" class="flex flex-col gap-3" >
+            <div class="flex flex-col gap-2">
+                <label for="address">Dirección de entrega:</label>
+                <textarea appErrorHighlight name="address" id="address" formControlName="address" class="form-control"
+                    placeholder="Ingrese la dirección a donde debemos enviar su orden"></textarea>
+            </div>
+            <p class="text-sm text-muted-foreground ">Esto es un sitio de prueba por favor no ponga información sensible. </p>
+            <div class="flex flex-col gap-2">
+                <label for="number">Número de la tarjeta:</label>
+                <input appNumberFormatter appErrorHighlight name="number" id="number" formControlName="number"
+                    class="form-control" placeholder="#### - #### - #### - 7895" />
+            </div>
+            <div class="flex gap-4">
+                <div class="flex flex-col gap-2">
+                    <label for="cvv">Cvv:</label>
+                    <input appOnlyDigit [appMaxLength]="3" appErrorHighlight formControlName="cvv" placeholder="966" id="cvv"
+                        name="cvv" type="number" class="form-control">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label for="exp">Exp:</label>
+                    <input appMonthYearFormatter appErrorHighlight formControlName="exp" placeholder="02/96" id="exp"
+                        name="exp" type="text" class="form-control">
+                </div>
+            </div>
+        </form>
+
+        <div class="flex justify-between">
+            <span>Subtotal:</span>
+            <span>{{subtotal|currency}}</span>
+        </div>
+        <div class="flex justify-between">
+            <span>Envio:</span>
+            <span>Gratis</span>
+        </div>
+        <div class="flex justify-between">
+            <span>IVA(16%):</span>
+            <span>{{iva()|currency}}</span>
+        </div>
+
+        <div class="border-t w-full border-gray-100"></div>
+
+        <div class="flex justify-between">
+            <span class="text-lg font-semibold">Total:</span>
+            <span>{{total()|currency}}</span>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button (click)="submit()" [disabled]="loading" class="btn-primary w-full">{{loading?'Procesando pago...':'Confirmar pago'}}</button>
+    </div>
+</div>

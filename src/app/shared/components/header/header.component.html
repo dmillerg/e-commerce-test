@@ -1,0 +1,66 @@
+<header class="fixed top-0 w-full bg-white/60 backdrop-blur-md shadow-sm border-b border-white/60 text-gray-500 z-5">
+    <div class="flex justify-between items-center max-w-6xl mx-auto py-4 px-6">
+        <a href="/" class="text-xl font-extrabold bg-gradient-to-r from-violet-500 via-purple-500 to-purple-500 bg-clip-text text-transparent">{{platformName}}</a>
+
+        <div class="flex md:hidden items-center gap-6">
+            <a appTooltip="Mi perfil" href="profile" class="hover:text-violet-600">
+                @if(userStore.getUser()){
+                <img appFallbackImagesTs [src]="userStore.getUser()?.avatar" alt=""
+                    class="w-6 h-6 rounded-full object-cover">
+                }@else {
+                <i class="bi bi-person-circle"></i>
+                }
+            </a>
+            <a appTooltip="Ir a mi carrito" href="/profile/cart" class="md:hidden flex flex-col gap-1"
+                aria-label="Abrir menú">
+                <i class="bi bi-cart3"></i>
+            </a>
+            <button appTooltip="Cerrar sesión" (click)="logout()" class="md:hidden flex flex-col gap-1 cursor-pointer"
+                aria-label="Abrir menú">
+                <i class="bi bi-door-closed"></i>
+            </button>
+            <button (click)="toggleMenu()" class="md:hidden flex flex-col gap-1 cursor-pointer" aria-label="Abrir menú">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+
+        <nav class="hidden md:flex">
+            <ul class="flex gap-6">
+                <li><a href="home" class="hover:text-violet-600">
+                        Inicio</a></li>
+                <li><a href="products" class="hover:text-violet-600">
+                        Productos</a></li>
+                <li><a href="contact" class="hover:text-violet-600">Contacto</a></li>
+                <li [appTooltip]="'Mi perfil'">
+                    <a href="profile" class="hover:text-violet-600">
+                        @if(userStore.getUser()){
+                        <img appFallbackImagesTs [src]="userStore.getUser()?.avatar" alt=""
+                            class="w-6 h-6 rounded-full object-cover">
+                        }@else {
+                        <i class="bi bi-person-circle"></i>
+                        }
+                    </a>
+                </li>
+
+                <li [appTooltip]="'Ir a mi carrito'" class="relative"> @if(total()>0){<div
+                        class="w-5 h-5 -top-3 -right-3 bg-violet-500 text-white text-xs absolute rounded-full flex justify-center items-center text-center">
+                        {{total()}}</div>}<a href="profile/cart" class="hover:text-violet-600"><i
+                            class="bi bi-cart3"></i></a></li>
+                <li appTooltip="Cerrar sesión"><button (click)="logout()" class="cursor-pointer"> <i class="bi bi-door-closed hover:text-violet-600"></i></button></li>
+            </ul>
+        </nav>
+    </div>
+
+    @if(menuOpen()){
+    <div [ngClass]="{
+      'max-h-0 opacity-0 overflow-hidden': !menuOpen(),
+      'max-h-96 opacity-100': menuOpen()
+    }" class="md:hidden  px-6 transition-all duration-500 ease-in-out">
+        <ul class="flex flex-col gap-4 p-4">
+            <li><a href="home" class="hover:text-violet-600">Inicio</a></li>
+            <li><a href="products" class="hover:text-violet-600">Productos</a></li>
+            <li><a href="contact" class="hover:text-violet-600">Contacto</a></li>
+        </ul>
+    </div>
+    }
+</header>

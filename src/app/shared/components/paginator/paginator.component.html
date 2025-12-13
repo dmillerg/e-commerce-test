@@ -1,0 +1,16 @@
+<div class="flex gap-2 my-3">
+    <button class="btn-outline" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)"
+        aria-label="Página anterior">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+    @for (page of [].constructor(totalPages); track $index) {
+    <button [ngClass]="{ 'btn-primary': $index + 1 === currentPage, 'btn-outline':$index+1!==currentPage }"
+        (click)="changePage($index + 1)">
+        {{ $index + 1 }}
+    </button>
+    }
+    <button class="btn-outline" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)"
+        aria-label="Página siguiente">
+        <i class="bi bi-chevron-right"></i>
+    </button>
+</div>

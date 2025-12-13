@@ -1,0 +1,40 @@
+<div class="card flex flex-col gap-3">
+    <div class="card-header">Resumen del pedido</div>
+    <div class="card-body flex flex-col gap-3">
+        <div class="flex justify-between">
+            <span>Subtotal:</span>
+            <span>{{subtotal()|currency}}</span>
+        </div>
+        <div class="flex justify-between">
+            <span>Envio:</span>
+            <span>Gratis</span>
+        </div>
+        <div class="flex justify-between">
+            <span>IVA(16%):</span>
+            <span>{{iva()|currency}}</span>
+        </div>
+
+        <div class="border-t w-full border-gray-100"></div>
+
+        <div class="flex justify-between">
+            <span class="text-lg font-semibold">Total:</span>
+            <span>{{total()|currency}}</span>
+        </div>
+
+        <button [routerLink]="'/profile/payment'" class="btn-primary flex gap-2" [disabled]="subtotal()===0">Proceder a pagar <i class="bi bi-arrow-right"></i></button>
+
+    </div>
+    <div class="card-footer justify-start flex-col gap-3 flex-wrap">
+        <p class="text-sm">Aceptamos:</p>
+        <div class="flex gap-2">
+            <div class="border border-gray-500/20 rounded-lg shadow p-1">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
+                    class="w-12 h-6 object-contain" alt="Visa">
+            </div>
+            <div class="border border-gray-500/20 rounded-lg shadow p-1">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/MasterCard_Logo.svg"
+                    class="w-12 h-6 object-contain" alt="MasterCard">
+            </div>
+        </div>
+    </div>
+</div>

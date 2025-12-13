@@ -1,0 +1,33 @@
+<div
+    class="flex md:border border-gray-100 px-2 md:px-6 py-12 rounded-lg md:shadow max-w-lg mx-auto md:mt-20 flex-col gap-4 items-center">
+    <h2 class="text-2xl font-semibold text-violet-500">Iniciar sesión</h2>
+    <p class="text-gray-500 text-center">Ingresa tus credenciales para acceder a tu cuenta</p>
+
+    <form class="w-full px-4 flex flex-col gap-4 mt-8" [formGroup]="frm" (ngSubmit)="submit()" >
+        <div class="w-full">
+            <label for="email" class="text-sm text-gray-500 mb-2">Correo</label>
+            <input appErrorHighlight id="email" formControlName="email" type="text" class="form-control" placeholder="Ingrese su correo electrónico">
+        </div>
+        <div class="w-full relative">
+            <label for="password" class="text-sm text-gray-500 w-full flex justify-between mb-2">Contraseña <button [disabled]="loadingLogin || loadingForgot" (click)="forgetPassword()"
+                    class=" hover:underline text-violet-400">{{loadingForgot?'Enviando correo...':'¿Olvidaste tu contraseña?'}}</button></label>
+            <input appErrorHighlight id="password" [type]="!showPassword?'password':'text'" formControlName="password" type="text" class="form-control" placeholder="*********">
+            <button (click)="showPassword=!showPassword" type="button"
+                class="absolute top-9 right-3 text-violet-500 cursor-pointer hover:bg-violet-500/10 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-300">
+                <i [ngClass]="{'bi-eye':!showPassword,'bi-eye-slash':showPassword}" class="bi bi-eye"></i></button>
+        </div>
+        <button [disabled]="loadingLogin || loadingForgot" type="submit" class="btn-primary w-full">{{loadingLogin?'Iniciando sesión...':'Iniciar sesión'}}</button>
+    </form>
+
+    <div class="flex items-center w-full gap-8">
+        <div class="flex-1 border-t border-gray-300"></div>
+        <span class="text-gray-500 text-sm uppercase">o continua con</span>
+        <div class="flex-1 border-t border-gray-300"></div>
+    </div>
+
+    <app-auth-providers class="w-full"></app-auth-providers>
+
+    <div class="mx-auto text-sm text-gray-400">¿No tienes una cuenta? <a href="auth/register"
+            class="text-violet-400 hover:underline">Regístrate</a></div>
+
+</div>

@@ -1,0 +1,15 @@
+<div
+    class="flex md:border border-gray-100 px-2 md:px-6 py-12 rounded-lg md:shadow max-w-lg mx-auto md:mt-20 flex-col gap-4 items-center">
+    <h2 class="text-2xl font-semibold text-violet-500">Confirmar cuenta</h2>
+    <p class="text-gray-500 text-center">Se ha enviado un correo electrónico a la dirección registrada. Accede a tu
+        bandeja de entrada y escribe en este espacio el código de verificación para validar tu cuenta. Recuerda que el
+        código tiene una vigencia de únicamente 5 minutos.</p>
+    <form [formGroup]="frm" class="w-full px-4 flex flex-col gap-4" (ngSubmit)="submit()">
+        <textarea formControlName="token" appErrorHighlight name="token" id="token" class="form-control" rows="5"
+            placeholder="eynkasu2jdas.eu2o...."></textarea>
+        <div class="flex items-center gap-4 w-full">
+            <button [disabled]="loadingActive || loadingReset" (click)="sendConfirmationEmail()" type="button" class="flex-1 btn-outline">{{loadingReset?'Enviando correo...':'Reenviar correo'}}</button>
+            <button [disabled]="loadingActive || loadingReset" type="submit" class="flex-1 btn-primary mx-auto">{{loadingActive?'Activando cuenta...':'Confirmar cuenta'}}</button>
+        </div>
+    </form>
+</div>

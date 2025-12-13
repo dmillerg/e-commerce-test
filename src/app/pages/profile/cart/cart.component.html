@@ -1,0 +1,60 @@
+<div class="flex flex-col min-h-screen w-full">
+    <div class="container w-full px-3 md:px-[0] py-8 md:py-12 mx-auto">
+        <div class="mb-8 ">
+            <h1 class="text-3xl font-bold tracking-tight text-violet-500">Carrito de compras</h1>
+            <p class="mt-2 text-muted-foreground">
+                {{ cantProducts() }} productos en tu carrito
+            </p>
+        </div>
+
+        <div class="w-full shrink-0">
+            <div class="flex flex-col lg:flex-row gap-8 ">
+
+                <div class="flex flex-col flex-1 gap-4">
+                    @for (item of cart?.products; track $index) {
+                    <a [routerLink]="['/products', 'detail', item.productId]"
+                        class="border border-gray-200 rounded-lg shadow p-6 flex gap-3 items-center hover:shadow-md transition-all duration-300">
+                        <img appFallbackImagesTs [src]="item.image" class="h-20 w-20 rounded-lg" [alt]="item.title" />
+                        <div class="flex flex-col flex-1">
+                            <h4 class="font-semibold">{{item.title}}</h4>
+                            <span class="text-muted-foreground text-sm">{{item.category}}</span>
+                            <div class="flex items-center border rounded-md border-gray-400 w-fit mt-3 border-gray-400/30">
+                            <button class="h-9 w-9 rounded-none cursor-pointer" (click)="handleDecreaseQuantity(item,$event)"
+                                [disabled]="item.quantity <= 1">
+                                -
+                            </button>
+                            <span class="w-12 text-center">{{ item.quantity }}</span>
+                            <button class="h-9 w-9 rounded-none cursor-pointer" (click)="handleIncreaseQuantity(item,$event)"
+                               >
+                                +
+                            </button>
+                        </div>
+                        </div>
+                        <div class="flex flex-col gap-2 items-end">
+                            <button class="flex justify-center items-center rounded-full hover:bg-gray-100/20 transition-all duration-300 hover:shadow cursor-pointer" (click)="deleteProductCart(item.id, $event)">
+                                <i class="bi bi-x"></i>
+                            </button>
+                            <span class="font-semibold text-lg">
+                                {{ item.price * item.quantity | currency }}
+                            </span>
+                            <span class="text-muted-foreground text-sm">
+                                {{ item.price | currency }}
+                            </span>
+                        </div>
+                    </a>
+                    }
+                    @empty {
+                    <div class="flex justify-center items-center text-center text-muted-foreground min-h-60">
+                        No hay productos en tu carrito
+                    </div>
+                    }
+
+                    <a href="/products/catalog" class="btn-outline mt-16 flex gap-2"><i class="bi bi-cart-fill"></i> Continuar comprando</a>
+                </div>
+                <div class="md:sticky top-24 space-y-6  md:w-80">
+                    <app-cart-resume [subtotal]="getSubtotal()"></app-cart-resume>
+                </div>
+            </div>
+
+        </div>
+    </div>
