@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthProvidersComponent } from '../components/auth-providers/auth-providers.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ExpressionValidate } from '@app/core/consts/expresion-validate';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from '@app/core/services/notification.service';
 import { UserService } from '@app/core/services/user.service';
 import { UserStore } from '@app/core/stores/user.store';
+import { MetaDataService } from '@app/core/services/meta-data.service';
 
 @Component({
   selector: 'app-login',
@@ -19,13 +20,14 @@ import { UserStore } from '@app/core/stores/user.store';
   styleUrl: './login.component.scss',
   providers: [AuthService, UserService]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   protected loadingLogin: boolean = false;
   protected loadingForgot: boolean = false;
 
   protected showPassword: boolean = false;
   private fb = inject(FormBuilder);
+  private readonly metadataService = inject(MetaDataService);
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly userStore = inject(UserStore);
@@ -36,6 +38,10 @@ export class LoginComponent {
   });
   private readonly notificationService = inject(NotificationService);
 
+
+  ngOnInit(): void {
+    this.metadataService.init('login');
+  }
 
   protected submit() {
     if (this.frm.invalid) return this.frm.markAllAsTouched();

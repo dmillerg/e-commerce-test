@@ -8,6 +8,7 @@ import { ProductsService } from '@app/core/services/products.service';
 import { ProductCart } from '@app/core/models/product';
 import { CartStore } from '@app/core/stores/cart.store';
 import { FallbackImagesTsDirective } from '@app/core/directives/fallback-images.ts.directive';
+import { MetaDataService } from '@app/core/services/meta-data.service';
 
 @Component({
   selector: 'app-cart',
@@ -23,7 +24,10 @@ export class CartComponent implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly cartStore = inject(CartStore);
 
+  private readonly metadataService = inject(MetaDataService);
+
   ngOnInit(): void {
+    this.metadataService.init('cart')
     this.getCartData()
   }
 
@@ -62,13 +66,13 @@ export class CartComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     item.quantity--;
-    this.cartStore.updateQuantity(item.id,-1);
+    this.cartStore.updateQuantity(item.id, -1);
   }
 
   protected handleIncreaseQuantity(item: ProductCart, event: Event) {
     event.preventDefault();
     event.stopPropagation();
     item.quantity++;
-    this.cartStore.updateQuantity(item.id,1);
+    this.cartStore.updateQuantity(item.id, 1);
   }
 }

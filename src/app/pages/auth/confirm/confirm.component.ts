@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorHighlightDirective } from '@app/core/directives/error-hightlight.directive';
 import { AuthService } from '@app/core/services/auth.service';
+import { MetaDataService } from '@app/core/services/meta-data.service';
 import { NotificationService } from '@app/core/services/notification.service';
 import { UserService } from '@app/core/services/user.service';
 import { take } from 'rxjs';
@@ -15,7 +16,7 @@ import { take } from 'rxjs';
   styleUrl: './confirm.component.scss',
   providers: [AuthService, UserService]
 })
-export class ConfirmComponent {
+export class ConfirmComponent implements OnInit {
 
   protected loadingReset: boolean = false;
   protected loadingActive: boolean = false;
@@ -31,6 +32,10 @@ export class ConfirmComponent {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
 
+  private readonly metadataService = inject(MetaDataService);
+  ngOnInit(): void {
+    this.metadataService.init('activation')
+  }
 
   protected submit() {
     if (this.frm.invalid) return this.frm.markAllAsTouched();

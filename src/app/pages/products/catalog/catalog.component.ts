@@ -13,6 +13,7 @@ import { PaginatorComponent } from '@app/shared/components/paginator/paginator.c
 import { AccordionComponent } from '@app/shared/components/accordion/accordion.component';
 import { CategorysPricePipe } from '@app/core/pipes/categorys-price.pipe';
 import { ProductSkeletonComponent } from '../components/product-skeleton/product-skeleton.component';
+import { MetaDataService } from '@app/core/services/meta-data.service';
 
 @Component({
   selector: 'app-catalog',
@@ -51,8 +52,10 @@ export class CatalogComponent implements OnInit {
   protected filter: { categories: string[], currentPrice: number } = { categories: [], currentPrice: 0 };
   protected loading: boolean = false;
 
-  ngOnInit(): void {
-    this.getProducts()
+   private readonly metadataService = inject(MetaDataService);
+    ngOnInit(): void {
+      this.getProducts()
+      this.metadataService.init('catalog')
   }
 
   private getProducts() {
