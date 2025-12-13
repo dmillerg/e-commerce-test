@@ -11,7 +11,7 @@
                 </div>
             </div>
 
-            <div class="space-y-6">
+            <div class="flex flex-col gap-6">
                 <div>
                     <span class="text-sm text-muted-foreground">{{product.category}}</span>
                     <h1 class="text-3xl font-bold">{{ product.title }}</h1>
@@ -27,18 +27,18 @@
                     <span class="text-3xl font-bold text-violet-500">{{ product.price|currency }}</span>
                 </div>
 
-                <hr />
+                <div class="w-full border-gray-200 border-t"></div>
 
-                <div class="space-y-4">
+                <div class="">
                     <p class="text-muted-foreground">{{ product.description }}</p>
                 </div>
 
-                <hr />
+                <div class="w-full border-gray-200 border-t"></div>
 
-                <div class="space-y-4">
+                <div class="flex flex-col gap-4">
                     <div class="flex items-center">
                         <span class="text-sm font-medium mr-4">Cantidad:</span>
-                        <div class="flex items-center border rounded-md border-gray-400">
+                        <div class="flex items-center border border-gray-200 rounded-md ">
                             <button class="h-9 w-9 rounded-none cursor-pointer" (click)="handleDecreaseQuantity()"
                                 [disabled]="quantity <= 1">
                                 -
