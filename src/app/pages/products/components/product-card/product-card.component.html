@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header">{{product()?.title|shortDescription:40:true}}</div>
     <div class="card-body">
-        <img [src]="product()?.image" [alt]="product()?.title" class="h-56 w-full object-contain m-2">
+        <img appFallbackImagesTs [src]="product()?.image" [alt]="product()?.title" class="h-56 w-full object-contain m-2">
         <div class="flex justify-between items-center my-2">
             <span >{{product()?.category}}</span>
             <span >{{product()?.price|currency}}</span>
