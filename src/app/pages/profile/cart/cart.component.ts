@@ -7,11 +7,12 @@ import { RouterLink } from "@angular/router";
 import { ProductsService } from '@app/core/services/products.service';
 import { ProductCart } from '@app/core/models/product';
 import { CartStore } from '@app/core/stores/cart.store';
+import { FallbackImagesTsDirective } from '@app/core/directives/fallback-images.ts.directive';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CartResumeComponent, CommonModule, RouterLink],
+  imports: [CartResumeComponent, CommonModule, RouterLink, FallbackImagesTsDirective],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
   providers: [CartService, ProductsService]

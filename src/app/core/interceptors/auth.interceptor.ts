@@ -3,9 +3,11 @@ import { environment } from '@environments/environment.development';
 import { inject } from '@angular/core';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const userService = inject(UserService);
+  const router = inject(Router);
 
   let headers: Record<string, string> = {};
 
@@ -27,28 +29,27 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401 && typeof window !== 'undefined') {
-        return userService.refreshToken().pipe(
-          switchMap((res: any) => {
-            sessionStorage.setItem('auth', JSON.stringify(res));
+        if (req.url.includes('refresh')) {
+          sessionStorage.removeItem('auth');
+          sessionStorage.removeItem('user');
+          sessionStorage.removeItem('userId');
+          router.navigate(['auth/login'])
+        } else {
+          return userService.refreshToken().pipe(
+            switchMap((res: any) => {
+              sessionStorage.setItem('auth', JSON.stringify(res));
 
-            const newReq = req.clone({
-              setHeaders: {
-                ...headers,
-                Authorization: `Bearer ${res.access_token}`
-              }
-            });
+              const newReq = req.clone({
+                setHeaders: {
+                  ...headers,
+                  Authorization: `Bearer ${res.access_token}`
+                }
+              });
 
-            return next(newReq);
-          }),
-          catchError((refreshError: HttpErrorResponse) => {
-            if (refreshError.status === 401) {
-              sessionStorage.removeItem('auth');
-              sessionStorage.removeItem('user');
-              sessionStorage.removeItem('userId');
-            }
-            return throwError(() => refreshError);
-          })
-        );
+              return next(newReq);
+            })
+          );
+        }
       }
       return throwError(() => error);
     })

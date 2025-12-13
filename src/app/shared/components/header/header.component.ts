@@ -1,5 +1,6 @@
 import { isPlatformBrowser, NgClass } from '@angular/common';
 import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { FallbackImagesTsDirective } from '@app/core/directives/fallback-images.ts.directive';
 import { TooltipDirective } from '@app/core/directives/tootltip.directive';
 import { Cart } from '@app/core/models/cart';
 import { CartStore } from '@app/core/stores/cart.store';
@@ -9,7 +10,7 @@ import { environment } from '@environments/environment.development';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NgClass, TooltipDirective],
+  imports: [NgClass, TooltipDirective, FallbackImagesTsDirective],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
