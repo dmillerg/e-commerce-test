@@ -93,9 +93,26 @@
         animation: fadeOutDown 0.2s ease-in forwards;
     }
 
+    @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
 }
 
 
 .text-muted-foreground {
   color: hsl(0 0% 45.1%)
 }
+
+.super-bold {
+  font-weight: 900;            
+  font-stretch: ultra-expanded;  
+  letter-spacing: -0.5px;       
+  font-size: 3rem; 
+}
+
