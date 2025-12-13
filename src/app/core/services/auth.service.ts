@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { User } from '../models/user';
-import {  Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
 
- private readonly path: string = `${environment.auth_back_url}auth/`
+  private readonly path: string = `${environment.auth_back_url}auth/`
   private http = inject(HttpClient);
 
   public login(credential: { email: string, password: string }): Observable<User> {
@@ -32,8 +32,12 @@ export class AuthService {
     return this.http.post(`${this.path}get-token-change-password/`, { email, callbackUrl: `${environment.front_url}auth/reset` });
   }
 
-  
+
   public sendConfirmationToken(email: string) {
     return this.http.get(`${this.path}send-confirmation-token/${email}`)
+  }
+
+  public logout() {
+    sessionStorage.clear();
   }
 }
