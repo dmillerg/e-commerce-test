@@ -59,9 +59,6 @@ export class LoginComponent implements OnInit{
         this.userStore.setUser(user);
         this.router.navigate(['products/catalog']);
       },
-      error: (err) => {
-        this.loadingLogin = false;
-      },
       complete: () => this.loadingLogin = false
     });
   }
