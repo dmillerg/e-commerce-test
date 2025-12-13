@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthProvidersComponent } from '../components/auth-providers/auth-providers.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ExpressionValidate } from '@app/core/consts/expresion-validate';
@@ -9,6 +9,7 @@ import { AuthService } from '@app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { NotificationService } from '@app/core/services/notification.service';
+import { MetaDataService } from '@app/core/services/meta-data.service';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +24,7 @@ import { NotificationService } from '@app/core/services/notification.service';
   styleUrl: './register.component.scss',
   providers: [AuthService]
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
   protected showPassword = false;
   protected showConfirm = false;
 
@@ -42,9 +43,15 @@ export class RegisterComponent {
 
 
   private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
+  private readonly router = inject(Router);  
+  private readonly metadataService = inject(MetaDataService);
+  
 
   protected avatarSrc: string = '';
+
+  ngOnInit(): void {
+    this.metadataService.init('register')
+  }
 
   protected submit() {
     if (this.frm.invalid) {

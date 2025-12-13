@@ -7,6 +7,7 @@ import { RatingsComponent } from '../components/ratings/ratings.component';
 import { CartStore } from '@app/core/stores/cart.store';
 import { CartService } from '@app/core/services/cart.service';
 import { Product } from '@app/core/models/product';
+import { MetaDataService } from '@app/core/services/meta-data.service';
 
 @Component({
   selector: 'app-detail',
@@ -20,6 +21,7 @@ export class DetailComponent implements OnInit {
 
   protected product?: Product;
   private readonly productService = inject(ProductsService);
+  private readonly metadataService = inject(MetaDataService);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly cartStore = inject(CartStore);
   private readonly platformId = inject(PLATFORM_ID);
@@ -36,7 +38,8 @@ export class DetailComponent implements OnInit {
     const id = this.activatedRoute.snapshot.params['id'];
     this.productService.getSingleProduct(id).pipe(take(1)).subscribe({
       next: (response) => {
-        this.product = response
+        this.product = response;
+        this.metadataService.setProductMeta(this.product.title, this.product.description, this.product.price, this.product.rating.rate, this.product.image, this.product.category)
       }
     })
   }
