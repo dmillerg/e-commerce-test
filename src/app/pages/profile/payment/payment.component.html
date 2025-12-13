@@ -1,0 +1,33 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 justify-center px-4 md:px-0">
+    <div class="flex flex-col  gap-4 md:col-span-2">
+        @for (item of cart.getCart()!.products; track $index) {
+        <a [routerLink]="['/products', 'detail', item.productId]"
+            class="border border-gray-200 rounded-lg shadow p-6 flex gap-3 items-center hover:shadow-md transition-all duration-300">
+            <img appFallbackImagesTs [src]="item.image" class="h-20 w-20 rounded-lg" [alt]="item.title" />
+            <div class="flex flex-col flex-1">
+                <h4 class="font-semibold">{{item.title}}</h4>
+                <span class="text-muted-foreground text-sm">{{item.category}}</span>
+                <div class=" text-center flex text-muted-foreground text-sm">Cantidad: {{ item.quantity }}
+                </div>
+            </div>
+            <div class="flex flex-col gap-2 items-end">
+                <span class="font-semibold text-lg">
+                    {{ item.price * item.quantity | currency }}
+                </span>
+                <span class="text-muted-foreground text-sm">
+                    {{ item.price | currency }}
+                </span>
+            </div>
+        </a>
+        }
+        @empty {
+        <div class="flex justify-center items-center text-center text-muted-foreground min-h-60">
+            No hay productos en tu carrito
+        </div>
+        }
+
+    </div>
+    <div class="col-span-1">
+        <app-payment-resume class="mx-auto"></app-payment-resume>
+    </div>
+</div>

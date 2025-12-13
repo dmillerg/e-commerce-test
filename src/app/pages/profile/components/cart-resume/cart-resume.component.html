@@ -21,7 +21,7 @@
             <span>{{total()|currency}}</span>
         </div>
 
-        <button class="btn-primary flex gap-2" [disabled]="subtotal()===0">Proceder a pagar <i class="bi bi-arrow-right"></i></button>
+        <button [routerLink]="'/profile/payment'" class="btn-primary flex gap-2" [disabled]="subtotal()===0">Proceder a pagar <i class="bi bi-arrow-right"></i></button>
 
     </div>
     <div class="card-footer justify-start flex-col gap-3 flex-wrap">

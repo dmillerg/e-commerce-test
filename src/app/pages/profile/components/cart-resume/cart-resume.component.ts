@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, model } from '@angular/core';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-cart-resume',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './cart-resume.component.html',
   styleUrl: './cart-resume.component.scss'
 })
