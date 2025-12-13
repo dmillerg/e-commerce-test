@@ -12,8 +12,11 @@
                 <i class="bi bi-person-circle"></i>
                 }
             </a>
-            <a appTooltip="Ir a mi carrito" href="/profile/cart" class="md:hidden flex flex-col gap-1"
+            <a appTooltip="Ir a mi carrito" href="/profile/cart" class="md:hidden flex flex-col gap-1 relative"
                 aria-label="Abrir menú">
+                 @if(total()>0){<div
+                        class="w-5 h-5 -top-3 -right-3 bg-violet-500 text-white text-xs absolute rounded-full flex justify-center items-center text-center">
+                        {{total()}}</div>}
                 <i class="bi bi-cart3"></i>
             </a>
             @if(userStore.getUser()){
